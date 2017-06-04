@@ -11,9 +11,16 @@ class Directions {
         new FlxPoint( 0,  0),
         new FlxPoint( 1,  0),
         new FlxPoint(-1,  1),
-        new FlxPoint( 0, -1),
+        new FlxPoint( 0,  1),
         new FlxPoint( 1,  1)
     ];
+
+    public static function opposite(d:Direction, o:Direction):Bool {
+        return (d == NORTH && o == SOUTH) || 
+               (d == SOUTH && o == NORTH) ||
+               (d == WEST && o == EAST) ||
+               (d == EAST && o == WEST);
+    }
 
     static function toInt(d: Direction): Int {
         return switch(d) {

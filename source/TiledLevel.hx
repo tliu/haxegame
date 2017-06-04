@@ -2,6 +2,7 @@ package;
 
 using Lambda;
 import flixel.FlxG;
+import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
@@ -233,8 +234,8 @@ class TiledLevel extends TiledMap
                 bindings.addKey(ControlType.RIGHT, FlxKey.D);
                 bindings.addKey(ControlType.LEFT, FlxKey.A);
                 bindings.addKey(ControlType.INTERACT, FlxKey.F);
-				var player = new Player(x, y, bindings,state.cameraMap[PlayerNumber.ONE], PlayerNumber.ONE);
-				state.cameraMap[PlayerNumber.ONE].follow(player);
+				var player = new Player(x, y, state, bindings,state.cameraMap[PlayerNumber.ONE], PlayerNumber.ONE);
+				state.cameraMap[PlayerNumber.ONE].follow(player, FlxCameraFollowStyle.NO_DEAD_ZONE);
 				state.playerOne = player;
 				group.add(player);
             case "player2_start":
@@ -244,8 +245,8 @@ class TiledLevel extends TiledMap
                 bindings.addKey(ControlType.RIGHT, FlxKey.RIGHT);
                 bindings.addKey(ControlType.LEFT, FlxKey.LEFT);
                 bindings.addKey(ControlType.INTERACT, FlxKey.L);
-				var player = new Player(x, y, bindings, state.cameraMap[PlayerNumber.TWO], PlayerNumber.TWO);
-				state.cameraMap[PlayerNumber.TWO].follow(player);
+				var player = new Player(x, y, state, bindings, state.cameraMap[PlayerNumber.TWO], PlayerNumber.TWO);
+				state.cameraMap[PlayerNumber.TWO].follow(player, FlxCameraFollowStyle.NO_DEAD_ZONE);
 				state.playerTwo = player;
 				group.add(player);
 				

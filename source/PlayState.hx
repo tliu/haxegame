@@ -17,8 +17,8 @@ class PlayState extends FlxState
 		super.create();
         FlxG.camera.bgColor = 0xFF000000;
         FlxG.mouse.visible = false;
-        var cameraOne:FlxCamera = new FlxCamera(0, 0, 512, 512);
-        var cameraTwo:FlxCamera = new FlxCamera(544, 0, 512, 512);
+        var cameraOne:FlxCamera = new FlxCamera(0, 0, 480, 480);
+        var cameraTwo:FlxCamera = new FlxCamera(490, 0, 480, 480);
         cameraOne.bgColor = 0xFF292634;
         cameraTwo.bgColor = 0xFF292634;
         this.cameraMap = new Map<PlayerNumber, FlxCamera>();

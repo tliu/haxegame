@@ -6,7 +6,7 @@ import flixel.FlxG;
 import flixel.FlxCamera;
 import flixel.math.FlxPoint;
 
-class Player extends FlxSprite
+class Player extends TiledMovementSprite
 {
 
     private var bindings:KeyBindings;
@@ -15,7 +15,7 @@ class Player extends FlxSprite
     public var cameraLocked:Bool;
     private static inline var SPEED:Int = 200;
 
-    public function new(x:Int, y:Int, bindings:KeyBindings, camera:FlxCamera, playerNumber:PlayerNumber) {
+    public function new(x:Int, y:Int, state:PlayState, bindings:KeyBindings, camera:FlxCamera, playerNumber:PlayerNumber) {
         if (x % 32 != 0) {
             x = Std.int(x / 32);
             x *= 32;
@@ -24,7 +24,7 @@ class Player extends FlxSprite
             y = Std.int(y / 32);
             y *= 32;
         }
-        super(x, y);
+        super(x, y, state);
         this.bindings = bindings;
         this.cam = camera;
         this.playerNumber = playerNumber;
@@ -40,33 +40,41 @@ class Player extends FlxSprite
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-        this.velocity.x = 0;
-        this.velocity.y = 0;
         for (key in bindings.keyToControl.keys()) {
-            if (FlxG.keys.anyJustPressed([key])) {
-                executeControl(bindings.keyToControl[key]);
+            if (FlxG.keys.anyPressed([key])) {
+                executePressed(bindings.keyToControl[key]);
+            }
+            if (FlxG.keys.anyJustReleased([key])) {
+                executeJustReleased(bindings.keyToControl[key]);
             }
         }
     }
 
-    private function executeControl(control: ControlType):Void {
+    private function executePressed(control: ControlType):Void {
+        trace(this.cam.scroll);
         switch (control) {
             case ControlType.UP:
-                this.velocity.y = -SPEED;
+                queueMovement(Direction.NORTH);
             case ControlType.DOWN:
-                this.velocity.y = SPEED;
+                queueMovement(Direction.SOUTH);
             case ControlType.LEFT:
-                this.velocity.x = -SPEED;
+                queueMovement(Direction.WEST);
             case ControlType.RIGHT:
-                this.velocity.x = SPEED;
+                queueMovement(Direction.EAST);
+            default:
+        }
+    }
+    private function executeJustReleased(control: ControlType):Void {
+        switch (control) {
             case ControlType.INTERACT:
-                trace("p" + this.playerNumber + ": " + this.cameraLocked);
                 if (this.cameraLocked) {
                     this.cam.follow(this); 
                 } else {
                     this.cam.follow(null); 
                 }
                 this.cameraLocked = !this.cameraLocked;
+            default:
+                resetStepSize();
         }
     }
 }
